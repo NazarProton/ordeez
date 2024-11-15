@@ -1,0 +1,31 @@
+version: '3'
+services:
+  back-end:
+    image: "${IMAGE}:${TAG}"
+    restart: always
+    depends_on:
+      - mysql_backend
+    ports:
+      - "127.0.0.1:${PORT_DOCKER}:${APP_PORT}"
+    env_file:
+      - app-variables.env
+    environment: 
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USERNAME: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      OWNER_PRIVATE_KEY: ${OWNER_PRIVATE_KEY}
+      TG_BOT_TOKEN: ${TG_BOT_TOKEN}
+      UNISAT_API_KEY: ${UNISAT_API_KEY}
+      ORDINALSBOT_API_KEY: ${ORDINALSBOT_API_KEY}
+
+  mysql_backend:
+    image: mysql:8.1
+    restart: always
+    environment:
+      MYSQL_TCP_PORT: ${MYSQL_TCP_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - /opt/backend-horiza:/var/lib/mysql/

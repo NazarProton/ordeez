@@ -1,0 +1,14 @@
+package-lock.json
+yarn.lock
+.DS_Store
+.idea/
+node_modules/
+config/cert/
+.env
+.csv
+temp/
+logs/
+backup/
+store/
+*.log
+public/images/*

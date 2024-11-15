@@ -1,0 +1,41 @@
+name: Build Ordeez Backend
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  prod-deploy:
+    runs-on: [self-hosted]
+    steps:
+      -  uses: actions/checkout@v3
+
+      - name: Make envfile
+        uses: SpicyPizza/create-envfile@v2.0
+        with:
+          envkey_TAG: ${{ github.run_number }}
+          envkey_IMAGE: ${{ github.event.repository.name }}
+          file_name: .env
+          fail_on_empty: false
+          sort_keys: false
+
+      - name: Make app envfile
+        run : |
+          echo '${{ vars.APP_ENV }}'  >> .env
+          echo '${{ vars.APP_ENV }}'  >> app-variables.env
+
+      - name: Build docker image
+        run :  docker build -f ./build/Dockerfile -t "${{ github.event.repository.name }}":"${{ github.run_number }}" .
+
+      - name: Start/Upload docker-compose
+        env:
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          OWNER_PRIVATE_KEY: ${{secrets.OWNER_PRIVATE_KEY}}
+          TG_BOT_TOKEN: ${{secrets.TG_BOT_TOKEN}}
+          UNISAT_API_KEY: ${{secrets.UNISAT_API_KEY}}
+          ORDINALSBOT_API_KEY: ${{secrets.ORDINALSBOT_API_KEY}}
+
+        run :  docker compose --project-name prod --env-file .env -f ./docker-compose.yaml up -d
