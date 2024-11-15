@@ -1,0 +1,9 @@
+version: '3'
+services:
+  frontend-app:
+    image: "${IMAGE}:${TAG}"
+    restart: always
+    ports:
+      - "127.0.0.1:${PORT_DOCKER}:3000"
+    env_file:
+      - app.env

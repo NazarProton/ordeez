@@ -1,0 +1,18 @@
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 26 26"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M16 0V4H4V20H0V0H16Z"
+            fill='#F50076'
+          />
+          <path
+            fillRule="evenodd"
+            clipRule="evenodd"
+            d="M6 6V26H22V6H6ZM10 22V10H18V22H10Z"
+            fill='#FFF05A'
+          />
+        </svg>
